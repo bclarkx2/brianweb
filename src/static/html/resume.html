@@ -37,6 +37,48 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <hr>
 
           <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+
+          <button onclick="myFunction('SkillLinux')" class="w3-button w3-block w3-left-align"><b>Linux</b>
+          </button>
+          <div id="SkillLinux" class="w3-container w3-hide w3-block">
+            <p>Use Ubuntu on a daily basis.</p>
+          </div>
+
+          <button onclick="myFunction('SkillVersionControl')" class="w3-button w3-block w3-left-align"><b>Version Control</b>
+          </button>  
+          <div id="SkillVersionControl" class="w3-container w3-hide">
+            <p>Familiar with both git and subversion.</p>
+          </div>
+          
+          <button onclick="myFunction('SkillTypesetting')" class="w3-button w3-block w3-left-align"><b>Typesetting</b>
+          </button>            
+          <div id="SkillTypesetting" class="w3-container w3-hide">
+            <p>Frequently use LaTeX to typeset documents.</p>
+          </div>
+          
+          <button onclick="myFunction('SkillAutomation')" class="w3-button w3-block w3-left-align"><b>Automation</b>
+          </button>            
+          <div id="SkillAutomation" class="w3-container w3-hide">
+            <p>Use i3 window manager for productivity, make to automate project builds, etc...<\p>
+          </div>
+
+
+          <script>
+            function myFunction(id) {
+                var x = document.getElementById(id);
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show";
+                } else { 
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+          </script>
+
+          <!-- <ul>
+            <li class="w3-display-container">Linux
+            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-right">&times;</span>
+          </ul>
+
           <p>Linux</p>
           <div class="w3-light-grey w3-small">
             Use Ubuntu on a daily basis.
@@ -53,7 +95,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
           <div class="w3-light-grey w3-small">
             Use i3 window manager for productivity, make to automate project builds, etc...
           </div>
-          <br>
+          <br> -->
 
           <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
           <p>English</p>

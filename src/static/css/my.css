@@ -1509,6 +1509,14 @@ width:auto!important;
 margin:0 10px;
 }
 
+.collapsible:after {
+content: '\02795';  /*Unicode character for "plus" sign (+) */
+font-size: 13px;
+color: white;
+float: right;
+margin-left: 5px;
+}
+
 .w3-modal {
 padding-top:30px;
 }
