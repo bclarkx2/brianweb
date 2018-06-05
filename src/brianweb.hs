@@ -29,7 +29,7 @@ handlers = msum
   ]
 
 {- Responses -}
-greet = path (\s -> ok $ toResponse $ "Hello, " ++ s ++ "\n")
+greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
 
 
 {- Templates -}
