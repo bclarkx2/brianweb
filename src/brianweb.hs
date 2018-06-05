@@ -27,12 +27,13 @@ handlers = msum
                      greet
   , dir "css" $ serveDirectory DisableBrowsing [] "../src/static/css"
   , dir "img" $ serveDirectory DisableBrowsing [] "../src/static/img"
-  , homePage
+  , dir "resume" $ resumePage
+  , resumePage
   ]
 
 {- Responses -}
 greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
-homePage = serveFile (asContentType "text/html") "../src/static/html/index.html"
+resumePage = serveFile (asContentType "text/html") "../src/static/html/resume.html"
 
 
 {- Templates -}

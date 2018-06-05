@@ -17,7 +17,7 @@ progress {
 vertical-align:baseline;
 }
 
-audio:not([controls]) {
+audio:not([controls]) { 
 display:none;
 height:0;
 }
@@ -201,6 +201,10 @@ h1,h2,h3,h4,h5,h6 {
 font-family:"Segoe UI",Arial,sans-serif;
 font-weight:400;
 margin:10px 0;
+}
+
+.project-icon {
+width:24px;
 }
 
 .w3-wide {
@@ -453,7 +457,7 @@ width:100%;
 }
 
 .w3-responsive {
-display:block;
+display:block
 overflow-x:auto;
 }
 
