@@ -25,12 +25,14 @@ main = simpleHTTP conf $ handlers
 handlers = msum
   [ dir "hello" $ do method [GET, HEAD]
                      greet
+  , dir "page" $ serveFile (asContentType "text/html") "../src/static/html/page.html"
+  , dir "css" $ serveDirectory DisableBrowsing [] "../src/static/css"
+  , dir "img" $ serveDirectory DisableBrowsing [] "../src/static/img"
   , ok $ toResponse $ homePage
   ]
 
 {- Responses -}
 greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
-
 
 {- Templates -}
 appTemplate :: String -> [H.Html] -> H.Html -> H.Html
@@ -45,6 +47,8 @@ appTemplate title headers body =
 
 {- Pages -}
 homePage :: H.Html
-homePage = appTemplate "h o me pag e" 
+homePage = appTemplate "Brian Clark" 
                        [H.meta ! A.name "keywords" ! A.content "happstack, blaze, html"] 
                        (H.p "HOME!")
+
+
