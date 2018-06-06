@@ -49,7 +49,7 @@ static = $(do
     litE $ stringL $ dir)
 
 staticDir :: String -> String
-staticDir dir = static ++ "/" ++ dir
+staticDir dir = "../src/static/" ++ dir
 
 
 
