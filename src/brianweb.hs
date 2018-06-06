@@ -30,8 +30,8 @@ main = simpleHTTP conf $ handlers
 handlers = msum
   [ dir "hello" $ do method [GET, HEAD]
                      greet
-  , dir "css" $ serveDirectory DisableBrowsing [] $ staticDir "css"
-  , dir "img" $ serveDirectory DisableBrowsing [] $ staticDir "img"
+  , dir "css" $ serveDirectory DisableBrowsing [] $ "../src/static/css"
+  , dir "img" $ serveDirectory DisableBrowsing [] $ "../src/static/img"
   , dir "resume" $ resumePage
   , resumePage
   ]
