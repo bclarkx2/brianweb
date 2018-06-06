@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings,TemplateHaskell #-}
 
 module Main where
 
@@ -8,6 +8,11 @@ import Control.Monad
 import Text.Blaze ((!))
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
+
+import Data.Functor
+import Language.Haskell.TH
+import System.Directory
+import System.FilePath
 
 {- Conf -}
 conf :: Conf
@@ -25,8 +30,8 @@ main = simpleHTTP conf $ handlers
 handlers = msum
   [ dir "hello" $ do method [GET, HEAD]
                      greet
-  , dir "css" $ serveDirectory DisableBrowsing [] "../src/static/css"
-  , dir "img" $ serveDirectory DisableBrowsing [] "../src/static/img"
+  , dir "css" $ serveDirectory DisableBrowsing [] $ staticDir "css"
+  , dir "img" $ serveDirectory DisableBrowsing [] $ staticDir "img"
   , dir "resume" $ resumePage
   , resumePage
   ]
@@ -34,6 +39,18 @@ handlers = msum
 {- Responses -}
 greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
 resumePage = serveFile (asContentType "text/html") "../src/static/html/resume.html"
+
+
+{- Navigation -}
+static :: String
+static = $(do
+    dir <- runIO getCurrentDirectory
+    filename <- loc_filename <$> location
+    litE $ stringL $ dir)
+
+staticDir :: String -> String
+staticDir dir = static ++ "/" ++ dir
+
 
 
 {- Templates -}
