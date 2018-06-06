@@ -30,27 +30,29 @@ main = simpleHTTP conf $ handlers
 handlers = msum
   [ dir "hello" $ do method [GET, HEAD]
                      greet
-  , dir "css" $ serveDirectory DisableBrowsing [] $ "../src/static/css"
-  , dir "img" $ serveDirectory DisableBrowsing [] $ "../src/static/img"
+  , dir "css" $ serveDirectory DisableBrowsing [] $ staticSubDir "css"
+  , dir "img" $ serveDirectory DisableBrowsing [] $ staticSubDir "img"
   , dir "resume" $ resumePage
   , resumePage
   ]
 
 {- Responses -}
 greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
-resumePage = serveFile (asContentType "text/html") "../src/static/html/resume.html"
+resumePage = serveFile (asContentType "text/html") $ staticPage "resume.html"
 
 
 {- Navigation -}
-static :: String
-static = $(do
+staticDir :: String
+staticDir = $(do
     dir <- runIO getCurrentDirectory
     filename <- loc_filename <$> location
-    litE $ stringL $ dir)
+    litE $ stringL $ dir ++ "/static")
 
-staticDir :: String -> String
-staticDir dir = "../src/static/" ++ dir
+staticSubDir :: String -> String
+staticSubDir dir = staticDir ++ "/" ++ dir
 
+staticPage :: String -> String
+staticPage page = (staticSubDir "html") ++ "/" ++ page
 
 
 {- Templates -}
