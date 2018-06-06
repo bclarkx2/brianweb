@@ -11,7 +11,7 @@ import qualified Text.Blaze.Html4.Strict.Attributes as A
 
 {- Conf -}
 conf :: Conf
-conf = Conf { port = 8888
+conf = Conf { port = 80
             , validator = Nothing
             , logAccess = Just logMAccess
             , timeout = 30
