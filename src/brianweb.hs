@@ -5,6 +5,7 @@ module Main where
 {- Imports -}
 import Happstack.Server
 import Control.Monad
+
 import Text.Blaze ((!))
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
@@ -13,6 +14,8 @@ import Data.Functor
 import Language.Haskell.TH
 import System.Directory
 import System.FilePath
+import System.Environment
+
 
 {- Conf -}
 conf :: Conf
@@ -30,8 +33,9 @@ main = simpleHTTP conf $ handlers
 handlers = msum
   [ dir "hello" $ do method [GET, HEAD]
                      greet
-  , dir "css" $ serveDirectory DisableBrowsing [] $ staticSubDir "css"
-  , dir "img" $ serveDirectory DisableBrowsing [] $ staticSubDir "img"
+  , dir "css"   $ serveDirectory DisableBrowsing [] $ staticSubDir "css"
+  , dir "img"   $ serveDirectory DisableBrowsing [] $ staticSubDir "img"
+  , dir "files" $ serveFiles
   , dir "resume" $ resumePage
   , resumePage
   ]
@@ -39,6 +43,10 @@ handlers = msum
 {- Responses -}
 greet = path $ \s -> ok $ toResponse $ (("Hello, " ++ s ++ "\n") :: String)
 resumePage = serveFile (asContentType "text/html") $ staticPage "resume.html"
+
+serveFiles =
+  require getFilesPath $ \filesPath -> 
+  serveDirectory EnableBrowsing [] filesPath
 
 
 {- Navigation -}
@@ -54,6 +62,8 @@ staticSubDir dir = staticDir ++ "/" ++ dir
 staticPage :: String -> String
 staticPage page = (staticSubDir "html") ++ "/" ++ page
 
+getFilesPath :: IO (Maybe FilePath)
+getFilesPath = lookupEnv "BRIANWEB_FILES"
 
 {- Templates -}
 appTemplate :: String -> [H.Html] -> H.Html -> H.Html
