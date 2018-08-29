@@ -7,8 +7,9 @@ import Happstack.Server
 import Control.Monad
 
 import Text.Blaze ((!))
-import qualified Text.Blaze.Html4.Strict as H
-import qualified Text.Blaze.Html4.Strict.Attributes as A
+import Text.Blaze (toValue)
+import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Html5.Attributes as A
 
 import Data.Functor
 import Language.Haskell.TH
@@ -37,7 +38,8 @@ handlers = msum
   , dir "img"   $ serveDirectory DisableBrowsing [] $ staticSubDir "img"
   , dir "files" $ serveFiles
   , dir "resume" $ resumePage
-  , resumePage
+  , dir "index" $ ok $ toResponse $ indexTemplate "index.css"
+  , ok $ toResponse $ indexTemplate "index.css"
   ]
 
 {- Responses -}
@@ -66,12 +68,25 @@ getFilesPath :: IO (Maybe FilePath)
 getFilesPath = lookupEnv "BRIANWEB_FILES"
 
 {- Templates -}
-appTemplate :: String -> [H.Html] -> H.Html -> H.Html
-appTemplate title headers body =
+indexTemplate :: String -> H.Html
+indexTemplate css =
+  H.docTypeHtml $ do
     H.html $ do
-      H.head $ do
-        H.title (H.toHtml title)
-        H.meta ! A.httpEquiv "Content-Type" ! A.content "text/html;charset=utf-8"
-        sequence_ headers
-      H.body $ do
-        body
+      H.title $ htmlStr "Clarknet"
+      H.meta ! A.httpEquiv "Content-Type"
+             ! A.content "text/html;charset=utf-8"
+      H.link ! A.rel "stylesheet"
+             ! A.type_ "text/css"
+             ! A.href (toValue $ "css/" <> css)
+    H.body $ do
+      H.div ! A.class_ "Banner" $ do
+        H.p "Clarknet" ! A.class_ "BannerText"
+      H.ul $ do
+        H.li $ do
+          H.a "Resume" ! A.href "resume"
+        H.li $ do
+          H.a "Files" ! A.href "files"
+
+htmlStr :: String -> H.Html
+htmlStr str = H.toHtml str
+
